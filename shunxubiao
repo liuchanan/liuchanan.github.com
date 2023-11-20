@@ -1,0 +1,207 @@
+/*
+时间：2023年11月20日
+内容：学习顺序表的插入，删除和删除所有负数元素
+      该程序缺点，刚开始不能在表中输入-1，
+*/
+#define MAXNUM 20
+
+#define true 1
+
+#define false 0
+#include <stdio.h>
+
+typedef struct
+
+{
+
+    int data[MAXNUM];
+
+    int length;
+
+}list_type;
+
+//提示：创建顺序表函数
+
+/*create a list:input data from keyboard,end by -1*/
+
+void createlist(list_type* lp)
+
+{
+
+    int i, elem;
+
+    lp->length = 0;
+
+    printf("\n please input datas of the list \n");
+
+    for (i = 0; i < MAXNUM; i++)
+
+    {
+
+        scanf_s(" %d", &elem);
+
+        if (elem == -1) break;
+
+        lp->data[i] = elem;
+
+        lp->length++;
+
+    }
+
+}
+
+//提示：遍历元素并依次输出函数
+
+void showlist(list_type* lp)
+
+{
+
+    int i;
+
+    printf("\nThese %d records are:\n", lp->length);
+
+    if (lp->length <= 0)
+
+    {
+
+        printf("No data!\n");
+
+        return;
+
+    }
+
+    for (i = 0; i < lp->length; i++)
+
+        printf(" %d ", lp->data[i]);
+
+    printf("\nlength of the list is:%d", lp->length);
+
+}
+
+//提示：插入函数，成功返回true，反之返回false。
+
+int insertlist(list_type* lp, int new_elem, int i)
+
+{
+    int j;
+
+    if (lp->length >= MAXNUM)
+
+    {
+
+        printf("the list is full,can not insert.");
+
+        return(false);
+
+    }
+
+    if (i<1 || i>lp->length + 1)
+
+    {
+
+        printf("\n%d is invalid value", i);
+
+        return(false);
+
+    }
+
+    for (j = lp->length - 1; j >= i - 1; j--)
+
+        lp->data[j + 1] = lp->data[j];
+
+    lp->data[i - 1] = new_elem;
+
+    lp->length++;
+
+    return(true);
+
+}
+
+//提示：删除函数，成功返回true，反之返回false。
+
+int deletelist(list_type* lp, int i)
+
+{
+
+    int j;
+
+    if (i<1 || i>lp->length)
+
+    {
+
+        printf("elem not exist");
+
+        return(false);
+
+    }
+
+    for (j = i; j < lp->length; j++)
+
+        lp->data[j - 1] = lp->data[j];
+
+    lp->length--;
+
+    return(true);
+
+}
+
+//删除所有负数的函数（自己编写）
+
+void delete_negative(list_type* lp)
+
+{
+    int i, j;
+    for(i=0; i < lp->length;i++)
+    {
+        while (lp->data[i] < 0)
+        {
+            for (j = i; j < lp->length; j++)
+
+                lp->data[j ] = lp->data[j+1];
+
+            lp->length--;
+        }
+    }
+
+}
+
+//提示：主函数，按要求调用已编写好的各函数
+
+void main()
+
+{
+    list_type list;
+
+    int i, data;
+
+    createlist(&list);
+
+    showlist(&list);
+
+    printf("\ninsert:Enter i and data :\n");
+
+    scanf_s("%d,%d", &i, &data);
+
+    insertlist(&list, data, i);
+
+    printf("\nlist after insert:\n");
+
+    showlist(&list);
+
+    printf("\ndelete:Enter i:\n");
+
+    scanf_s("%d", &i);
+
+    deletelist(&list, i);
+
+    printf("\nlist after delete:\n");
+
+    showlist(&list);
+
+    delete_negative(&list);   
+
+    printf("\nlist after delete all negative:\n");
+
+    showlist(&list);
+
+}

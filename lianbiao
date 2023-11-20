@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+/*
+时间：2023年11月20日
+内容：学习链表的输入和删除
+*/
+typedef struct node
+{
+	int data;
+	struct node* link;
+}JD;
+JD* lbsc(JD*, int);
+JD* insert(JD*, int,int);
+int main(void)
+{
+	JD* h, * f;
+	int j, x,number,data_insert;
+	h = (JD*)malloc(sizeof(JD)); /*生成表头结点*/
+	h->data = 0;
+	
+	f = h;//每一次打印的时候都要有，让指针归头节点
+	for (j = 1; j <= 5; j++) /*调用lbsr函数生成具有5个结点的单链表*/
+	{
+		scanf_s("%d", &x);
+		f = lbsc(f, x);//使每个节点链接起来
+	}
+	
+	f = h;//每一次打印的时候都要有，让指针归头节点
+	for (j = 1; j <= 5; j++) /*输出生成的单链表*/
+	{
+		f = f->link;
+		printf("%d,", f->data);
+	}
+	printf("\n");
+
+	//以下函数实现插入功能
+	printf("请输入插入位次\n");scanf_s("%d", &number);
+	printf("请输入插入数据\n");scanf_s("%d", &data_insert);
+	insert(h, data_insert, number);
+	printf("结果如下\n");
+	f = h;
+	for (j = 1; j <= 6; j++) /*输出生成的单链表*/
+	{
+		f = f->link;
+		printf("%d,", f->data);
+	}
+
+
+	return 0;
+}
+JD* lbsc(JD* p, int x)
+{
+	JD* s;
+	s = (JD*)malloc(sizeof(JD));
+	s->data = x;
+	p->link = s;
+	return s;
+}
+JD* insert(JD* p, int data, int add)
+/*
+p:头节点指针
+data:插入数据
+add:插入位次
+*/
+{   // 向链表中插入结点
+	// 第一步找到需要插入的节点的前一个元素
+	// 第二步把前一个地址的地址区存 插入的节点的地址
+	// 第三步把插入的节点的地址区存 （前一个地址区里面存的地址）这句重点
+	int i;
+	JD* temp = p; // 创建临时结点temp 注意：此时p是头节点不是链表第一个元素
+	for (i = 1; i < add; i++)
+	{
+		temp = temp->link;
+	}
+	JD* c = (JD*)malloc(sizeof(JD)); // 创建插入的节点	
+	c->data = data; // 将需要插入的数存到节点数据区中
+	c->link = temp->link; // 将需要插入的节点的地址区存temp的后一个地址所以就是temp->link
+	temp->link = c; // temp也就是前一个节点里面存c的地址
+	return p; // 返回头节点地址
+}

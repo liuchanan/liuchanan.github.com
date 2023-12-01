@@ -1,0 +1,98 @@
+#include <stdio.h>
+
+#define MAX 20
+int ChuQueue(int Q[], int* py, int* pf, int* pr)/************出队函数***************/
+
+{
+    int front, rear;
+
+    front = *pf; rear = *pr;
+
+    if (rear == front) return(0); /*队空函数值返回0*/
+
+    else
+
+    {
+
+        *py = Q[front]; /*出队元素赋值*/
+        
+        front = (front + 1) % MAX; /*头指针向前移动一位*/
+
+        *pf = front; /*头指针返回*/
+
+        return(1);
+    }
+}
+
+int RuQueue(int Q[], int x, int* pf, int* pr)/************入队函数***************/
+
+{
+    int front, rear;
+
+    front = *pf;  rear = *pr;
+
+    if ((rear + 1) % MAX == front) return(0); /*判断队列是否满*/
+
+    else
+
+    {
+
+        Q[rear] = x; /*将x赋值给队尾元素*/
+       
+        rear = (rear + 1) % MAX; /*队尾指针向前移动一位*/
+
+        *pr = rear; /*将队尾指针返回*/
+
+        return(1);
+    }
+}
+
+main()
+
+{
+    int front, rear, x, result,front_new,rear_new, v[20] = { 1,2,3,4,5,6,7,8,9,10 },new[20], i; /*定义队头指针front 队尾指针rear 变量x和初始队列*/
+    int cixu, shuju;
+    printf("请插入的元素的次序：\n");
+    scanf_s("%d", &cixu); /*入队元素值赋给x*/
+
+    printf("请输入要插入的元素：\n");
+    scanf_s("%d",&shuju); /*入队元素值赋给x*/
+
+    front = 0; /*队头指针为0*/
+
+    rear = 10; /*队尾指针为9*/
+    for (i = front % MAX; i <= 9; i++)/*将队列中的元素依次打印*/
+
+        printf("v[%d]=%d ", i, v[i]);
+
+    front_new = 0;
+    rear_new = 0;
+    for (i = 0; i <= 9; i++)
+    {
+        int y;
+        if (i == cixu-1)RuQueue(new, shuju, &front_new, &rear_new);
+
+        ChuQueue(v, &y, &front, &rear);
+        x = y;
+        RuQueue(new, x, &front_new, &rear_new);
+    }
+
+    result = RuQueue(v, x, &front, &rear); /*入队操作*/
+
+    if (result == 1) {
+       // printf("请插入元素后的队尾指针：\n");
+
+        printf("rear=%d\n", rear); /*如果入队成功打印rear=10*/
+       // printf("队列中的每个元素：\n");
+
+        printf("\n");
+        for (i = front_new % MAX; i <= 10; i++)/*将队列中的元素依次打印*/
+
+            printf("new[%d]=%d ", i, new[i]);
+
+    }; /*将队列中的元素依次打印*/
+
+}
+
+
+

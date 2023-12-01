@@ -1,0 +1,68 @@
+#define stacksize 100
+#include "stdio.h"
+int push(int s[], int x, int* ptop)
+
+{
+
+    int top;
+
+    top = *ptop; /*指针top指示当前栈顶元素的位置*/
+
+    if (top == stacksize) /*如果栈顶元素位置等于栈的长度*/
+
+    {
+        printf("overflow");  return (0);
+    } /*打印溢出*/
+
+    else {
+        s[top] = x; /*将x赋予s栈中top元素，即栈顶元素*/
+
+        *ptop = ++top;  /*栈顶加一*/
+
+        return (1);
+    } /*入栈成功函数值返回1*/
+
+}
+void dayin(int s[], int* ptop) {//顺序栈的打印
+    int top;
+    top = *ptop;
+    if (top == 0) {
+        printf("栈为空，无法打印！\n");
+    }
+    else
+    {
+        printf("该顺序栈的内容为:");
+        int n;
+        n = top;//很重要的一点 打印栈时不能改变栈顶元素 否则就成出栈操作了 相当于打印一遍就清空了顺序栈 
+        while (n != 0) {
+            printf("%d ", s[n - 1]);//important
+            n--;
+        }
+        printf("\n");
+    }
+}
+
+void main()
+
+{
+    static  int s[20] = { 10,20,30,40,50,60,70,80,90,100 };
+
+    int top = 10, result;
+
+    printf("top=%d\n", top);
+    
+    dayin(s, &top);
+
+
+    result = push(s, 11, &top); /*进行入栈操作*/
+
+    if (result == 1) /*如果入栈成功*/
+
+    {
+        printf("success !  \n"); printf("top=%d\n", top);
+        dayin(s, &top);
+    } /*先打印sucess！然后打印栈顶top=1*/
+
+    else  printf("failure!");
+
+}
